@@ -44,7 +44,7 @@ public class MyAdapter extends BaseAdapter {
 
         //Se infla el layout y de copia el formato de lista a la nueva
         LayoutInflater layoutInflater = LayoutInflater.from(this.context);
-        v = layoutInflater.inflate(R.layout.list_item,null);
+        v = layoutInflater.inflate(this.layout,null);
 
         //Traemos el nombre actual dependiendo de la posiciòn
         String currentName = names.get(position);
