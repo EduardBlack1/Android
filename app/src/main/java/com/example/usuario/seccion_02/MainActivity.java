@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
         names.add("Jose");
 
             //Adaptador, la fonrma de mostrar los datos en la lista
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
+            // ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
 
         //llenamos el listView con los datos adaptados
-        listView.setAdapter(adapter);
+        //listView.setAdapter(adapter);
 
 
         //Mètodo para detectar elemento seleccionado de la vista

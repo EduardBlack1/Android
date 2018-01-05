@@ -39,12 +39,24 @@ public class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 
-        //Copiamos la vista
-        View v = convertView;
+       //View holder pattern
+        ViewHolder holder;
 
-        //Se infla el layout y de copia el formato de lista a la nueva
-        LayoutInflater layoutInflater = LayoutInflater.from(this.context);
-        v = layoutInflater.inflate(R.layout.list_item,null);
+        if (convertView == null){
+
+            //Se infla el layout y de copia el formato de lista a la nueva
+            LayoutInflater layoutInflater = LayoutInflater.from(this.context);
+            convertView = layoutInflater.inflate(R.layout.list_item,null);
+
+            holder = new ViewHolder();
+            //Referenciamos el elemnto a modificar y es llenado
+            holder.nameTextView = (TextView) convertView.findViewById(R.id.textView);
+            convertView.setTag(holder);
+        }else{
+            holder = (ViewHolder) convertView.getTag();
+
+        }
+
 
         //Traemos el nombre actual dependiendo de la posiciòn
         String currentName = names.get(position);
@@ -52,11 +64,14 @@ public class MyAdapter extends BaseAdapter {
 
 
         //Referenciamos el elemnto a modificar y es llenado
-        TextView textView = (TextView) v.findViewById(R.id.textView);
-        textView.setText(currentName);
+        holder.nameTextView.setText(currentName);
 
         //se devuelve la lista llena y modificada
-        return v;
+        return convertView;
 
+    }
+
+    static class ViewHolder{
+        private TextView nameTextView;
     }
 }
