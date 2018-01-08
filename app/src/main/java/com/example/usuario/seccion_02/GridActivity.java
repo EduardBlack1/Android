@@ -2,6 +2,7 @@ package com.example.usuario.seccion_02;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,9 +61,12 @@ public class GridActivity extends AppCompatActivity {
         //Enlazamos con nuestro adaptador personalizado
        myAdapter = new MyAdapter(this, R.layout.grid_item, names);
         gridView.setAdapter(myAdapter);
+
+        registerForContextMenu(gridView);
     }
 
 
+    //Inflamos el layout del menu de opciones
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -71,7 +75,7 @@ public class GridActivity extends AppCompatActivity {
         return true;
     }
 
-
+    //Evento click en el elemento seleccionado
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -90,6 +94,47 @@ public class GridActivity extends AppCompatActivity {
         }
 
 
+
+    }
+
+
+
+    //Inflamos el layout del context menu ¿
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getMenuInflater();
+
+        //diseño ventana de eliminar
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle(this.names.get(info.position));
+
+
+
+        inflater.inflate(R.menu.context_menu,menu);
+    }
+
+
+    //Manejamos evento clock en el context menu
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.delete_item:
+
+                //borramos el elemento a la lista
+                this.names.remove(info.position);
+                //refresca el cambio de la lista en el adaptador
+                this.myAdapter.notifyDataSetChanged();
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
 
     }
 }
