@@ -10,50 +10,67 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView listView;
-    private List<String> names;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (ListView) findViewById(R.id.listView);
+        String json = "{" +
+                         "id: 0," +
+                             "city: {" +
+                             "id: 'london'," +
+                             "name: 'london'" +
+                //ignorar parametrosl
+                             "}"+
+                "}";
 
-            //Datos a mostrar
-        names = new ArrayList<String>();
-        names.add("Eduardo");
-        names.add("Luis");
-        names.add("Pedro");
-        names.add("Mario");
-        names.add("Jose");
+        city city = null;
+            try{
+                JSONObject mJson = new JSONObject(json);
+                int id = mJson.getInt("id");
+                String name = mJson.getString("name");
 
-            //Adaptador, la fonrma de mostrar los datos en la lista
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
-
-        //llenamos el listView con los datos adaptados
-        listView.setAdapter(adapter);
+                city = new city(id, name);
 
 
-        //Mètodo para detectar elemento seleccionado de la vista
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> adapterView, View view,int position,long id){
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-              Toast.makeText(MainActivity.this,"Clicked: "+ names.get(position), Toast.LENGTH_LONG).show();
 
-          }
+            //filtrando los objetos de objetos
+        Gson gson = new GsonBuilder().create();
+        Town town = gson.fromJson(json,Town.class);
 
-        });
 
-        //Enlazamos con nuestro adaptador personalizado
-        MyAdapter myAdapter = new MyAdapter(this, R.layout.list_item, names);
-        listView.setAdapter(myAdapter);
+        /*
+        //filtar elementos del json
+          Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            city city1 = gson.fromJson(json,city.class);
+            **/
+
+      /*
+        //Enviamos nuevamente un json
+        Gson gson = new Gson();
+
+        Toast.makeText(this,city.getId() + " -- " + city.getName(), Toast.LENGTH_LONG).show();
+
+        */
     }
+
+
 }
 
