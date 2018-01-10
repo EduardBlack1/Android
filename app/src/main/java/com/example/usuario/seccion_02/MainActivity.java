@@ -19,6 +19,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -28,51 +34,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String json = "{" +
-                         "id: 0," +
-                             "cities:[" +
-                            "{" +
-                                 "id: 1," +
-                               "name: 'london'" +
-                             "}" +
-                              "{" +
-                                "id: 2," +
-                                 "name: 'Sevilla'" +
-                             "}]"+
-                "}";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://samples.openweathermap.org/data/2.5/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        city city = null;
-            try{
-                JSONObject mJson = new JSONObject(json);
-                int id = mJson.getInt("id");
-                String name = mJson.getString("name");
+        WatherServices service = retrofit.create(WatherServices.class);
 
-                city = new city(id, name);
+        Call<city> cityCall =  service.getCity("München","b6907d289e10d714a6e88b30761fae22");
 
+        cityCall.enqueue(new Callback<city>() {
+            @Override
+            public void onResponse(Call<city> call, Response<city> response) {
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+              city city =  response.body();
+
             }
 
+            @Override
+            public void onFailure(Call<city> call, Throwable t) {
+                    Toast.makeText(MainActivity.this,"Error", Toast.LENGTH_LONG).show();
+            }
+        });
 
-            //filtrando los objetos de objetos
-        Gson gson = new GsonBuilder().create();
-        Town town = gson.fromJson(json,Town.class);
 
 
-        /*
-        //filtar elementos del json
-          Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            city city1 = gson.fromJson(json,city.class);
-            **/
-
-      /*
-        //Enviamos nuevamente un json
-        Gson gson = new Gson();
-
-        Toast.makeText(this,city.getId() + " -- " + city.getName(), Toast.LENGTH_LONG).show();
-
-        */
     }
 
 
