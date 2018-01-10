@@ -3,6 +3,8 @@ package com.example.usuario.seccion_02;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
 /**
  * Created by Usuario on 10/01/2018.
  */
@@ -11,13 +13,12 @@ public class Town {
 
 
     private int id;
-    private  city city;
+    private List<city> cities;
 
-    public Town(int id, com.example.usuario.seccion_02.city city) {
+    public Town(int id, List<city> cities) {
         this.id = id;
-        this.city = city;
+        this.cities = cities;
     }
-
 
     public int getId() {
         return id;
@@ -27,14 +28,13 @@ public class Town {
         this.id = id;
     }
 
-    public com.example.usuario.seccion_02.city getCity() {
-        return city;
+    public List<city> getCities() {
+        return cities;
     }
 
-    public void setCity(com.example.usuario.seccion_02.city city) {
-        this.city = city;
+    public void setCities(List<city> cities) {
+        this.cities = cities;
     }
-
 
     //para recorrer los objetos de objetos en el json
     public static city parseJSON(String respoonse){

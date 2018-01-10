@@ -30,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
         String json = "{" +
                          "id: 0," +
-                             "city: {" +
-                             "id: 'london'," +
-                             "name: 'london'" +
-                //ignorar parametrosl
-                             "}"+
+                             "cities:[" +
+                            "{" +
+                                 "id: 1," +
+                               "name: 'london'" +
+                             "}" +
+                              "{" +
+                                "id: 2," +
+                                 "name: 'Sevilla'" +
+                             "}]"+
                 "}";
 
         city city = null;
