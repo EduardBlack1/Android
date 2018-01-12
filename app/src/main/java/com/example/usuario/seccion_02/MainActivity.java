@@ -2,22 +2,7 @@ package com.example.usuario.seccion_02;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,24 +20,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://samples.openweathermap.org/data/2.5/")
+                .baseUrl("http://192.168.1.126:8080/evots/webServices/Obtener_usuarios.php/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        WatherServices service = retrofit.create(WatherServices.class);
+        WebServices service = retrofit.create(WebServices.class);
 
-        Call<city> cityCall =  service.getCity("München","b6907d289e10d714a6e88b30761fae22");
+        Call<Usuario> usuarioCall =  service.Obtener_usuarios();
 
-        cityCall.enqueue(new Callback<city>() {
+        usuarioCall.enqueue(new Callback<Usuario>() {
             @Override
-            public void onResponse(Call<city> call, Response<city> response) {
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
 
-              city city =  response.body();
+              Usuario Usuario =  response.body();
 
             }
 
             @Override
-            public void onFailure(Call<city> call, Throwable t) {
+            public void onFailure(Call<Usuario> call, Throwable t) {
                     Toast.makeText(MainActivity.this,"Error", Toast.LENGTH_LONG).show();
             }
         });
